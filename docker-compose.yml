@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  url-shortener-api-development:
+    build:
+      context: .
+    ports:
+      - ${PORT}:${PORT}
+    container_name: url-shortener-api-backend-development
+    restart: always
+    volumes:
+      - .:/usr/src/url-shortener-api-backend
+      - ./node_modules:/usr/src/url-shortener-api-backend/node_modules
+    working_dir: /usr/src/url-shortener-api-backend
+    environment:
+      NODE_ENV: development
+    command: yarn dev
+    depends_on:
+      - url-shortener-api-database-development
+      - url-shortener-api-cache-development
+
+  url-shortener-api-database-development:
+    image: postgres:14.5
+    container_name: url-shortener-api-database-development
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    command: postgres -p ${DB_PORT}
+
+  url-shortener-api-cache-development:
+    image: redis:6.2-alpine
+    container_name: url-shortener-api-cache-development
+    restart: always
+    ports:
+      - '${CACHE_PORT}:${CACHE_PORT}'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${CACHE_PASS}
+    volumes: 
+      - ./cache:/data

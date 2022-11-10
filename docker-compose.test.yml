@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  url-shortener-api-test:
+    build:
+      context: .
+    ports:
+      - ${PORT}:${PORT}
+    container_name: url-shortener-api-backend-test
+    restart: always
+    volumes:
+      - ./:/usr/src/url-shortener-api-backend/
+    working_dir: /usr/src/url-shortener-api-backend
+    environment:
+      NODE_ENV: test
+    command:
+      - /bin/sh
+      - -c
+      - |
+        yarn
+        yarn migration:run
+        yarn test
+    depends_on:
+      - url-shortener-api-database-test
+
+  url-shortener-api-database-test:
+    image: postgres:14.5
+    container_name: url-shortener-api-database-test
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    command: postgres -p ${DB_PORT}

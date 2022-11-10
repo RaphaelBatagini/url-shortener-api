@@ -1,0 +1,9 @@
+# Folders
+db
+cache
+node_modules
+dist
+
+# Files
+.env
+db.json

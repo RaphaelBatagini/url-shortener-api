@@ -1,0 +1,63 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a NodeJS API to convert currencies",
+    "version": "1.0.0",
+    "title": "Backend Software Engineer - SBF Group",
+    "contact": {
+      "email": "raphabatagini@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "schemes": ["http"],
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "paths": {
+    "/shorten-url/{originalUrl}": {
+      "get": {
+        "summary": "Shorten Url",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "originalUrl",
+            "in": "path",
+            "description": "The URL to be shorten",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ShortenedUrl"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ShortenedUrl": {
+      "type": "string"
+    }
+  },
+  "InvalidResponse": {
+    "type": "object",
+    "properties": {
+      "statusCode": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      }
+    }
+  }
+}
