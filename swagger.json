@@ -14,9 +14,9 @@
   },
   "schemes": ["http"],
   "host": "localhost:3000",
-  "basePath": "/api",
+  "basePath": "/",
   "paths": {
-    "/shorten-url/{originalUrl}": {
+    "/api/shorten-url/{originalUrl}": {
       "get": {
         "summary": "Shorten Url",
         "description": "",
@@ -34,11 +34,32 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ShortenedUrl"
-              }
+              "type": "#/definitions/ShortenedUrl"
             }
+          }
+        }
+      }
+    },
+    "/{shortenedKey}": {
+      "get": {
+        "summary": "Redirect Shortened URL",
+        "description": "Redirect user to the original URL",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "shortenedKey",
+            "in": "path",
+            "description": "The key created for the shortened URL",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to the original URL"
+          },
+          "404": {
+            "description": "Original URL not found"
           }
         }
       }
