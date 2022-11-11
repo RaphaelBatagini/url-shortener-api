@@ -14,7 +14,7 @@ export class UrlController {
 
       const result = await useCase.execute(request.params.originalUrl);
   
-      return response.status(httpStatus.OK).send(result);
+      return response.status(httpStatus.OK).send({ result });
     } catch (error) {
       logger.error(error.message, error);
       return response.status(httpStatus.INTERNAL_SERVER_ERROR).send();
