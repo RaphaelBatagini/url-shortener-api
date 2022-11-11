@@ -24,7 +24,7 @@ async function initServer(): Promise<void> {
     loadEnvironmentVariables();
     await databaseSetup();
     const webserver = getWebServer();
-    webserver.init(+process.env.PORT, routes, logger);
+    webserver.init(+process.env.PORT, routes, logger, process.env.ALLOWED_ORIGINS.split(','));
     handleExit();
   } catch (err) {
     logger.error('Server exited with error', err);

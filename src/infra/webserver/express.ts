@@ -1,6 +1,7 @@
 import 'express-async-errors';
 
 import express, { Request, Response, NextFunction, Router } from 'express';
+import cors from 'cors';
 import httpStatus from 'http-status';
 import { Routes } from '@/adapter/http/routes';
 import { IServer } from './interface';
@@ -13,10 +14,12 @@ export class ExpressWebServer implements IServer {
   readonly server = express();
   private logger: ILogger;
   private routes: Routes;
+  private allowedOrigins: string[];
 
-  async init(port: number, routes: Routes, logger: ILogger) {
+  async init(port: number, routes: Routes, logger: ILogger, allowedOrigins?: string[]) {
     this.routes = routes;
     this.logger = logger;
+    this.allowedOrigins = allowedOrigins;
     await this.routersSetup();
     this.listen(port, () => {
       this.logger.info(`Listening on port ${port}`);
@@ -32,6 +35,7 @@ export class ExpressWebServer implements IServer {
 
     this.setupLogs(router);
     this.setupDocs(router);
+    this.setupCors(router);
     // this.setupCache(router);
 
     this.routes.forEach(route => {
@@ -60,6 +64,12 @@ export class ExpressWebServer implements IServer {
   private setupDocs(router: Router): void {
     router.use('/docs', swaggerUi.serve);
     router.get('/docs', swaggerUi.setup(swaggerDocument));
+  }
+
+  private setupCors(router: Router): void {
+    router.use(cors({
+      origin: this.allowedOrigins
+  }));
   }
 
   private setupCache(router: Router): void {

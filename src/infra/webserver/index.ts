@@ -10,8 +10,8 @@ export class WebServer {
     this.server = server;
   }
 
-  async init(port: number, routes: Routes, logger: ILogger): Promise<void> {
-    await this.server.init(port, routes, logger);
+  async init(port: number, routes: Routes, logger: ILogger, allowedOrigins?: string[]): Promise<void> {
+    await this.server.init(port, routes, logger, allowedOrigins);
   }
 }
 
