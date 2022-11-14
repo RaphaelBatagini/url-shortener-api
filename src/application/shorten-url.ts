@@ -11,7 +11,7 @@ export class ShortenUrl {
     }))?.shift();
 
     if (!!existingUrl) {
-      return existingUrl.getShortenedUrl();
+      return existingUrl.getShortenedKey();
     }
 
     const shortenedKey = await this.generateShortenedKey();
@@ -22,7 +22,7 @@ export class ShortenUrl {
 
     await this.repository.persist(newUrl);
 
-    return newUrl.getShortenedUrl();
+    return newUrl.getShortenedKey();
   }
 
   async generateShortenedKey(): Promise<string> {

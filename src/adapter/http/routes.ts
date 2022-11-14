@@ -7,9 +7,9 @@ export const routes: Routes = [
     handler: UrlController.prototype.shorten,
   },
   {
-    method: 'ANY',
-    path: '/:shortenedKey',
-    handler: UrlController.prototype.redirect,
+    method: 'GET',
+    path: '/api/original-url/:shortenedKey',
+    handler: UrlController.prototype.getOriginalUrl,
   },
 ];
 

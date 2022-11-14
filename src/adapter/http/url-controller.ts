@@ -1,4 +1,4 @@
-import { FindUrlByShortenedKey, UrlNotFoundError } from "@/application/find-url-by-shortened-key";
+import { GetOriginalUrlByShortenedKey, UrlNotFoundError } from "@/application/get-original-url-by-shortened-key";
 import { ShortenUrl } from "@/application/shorten-url";
 import { logger } from "@/infra/logger";
 import { getUrlRepository } from "@/infra/repositories";
@@ -21,19 +21,19 @@ export class UrlController {
     }
   }
 
-  async redirect(request: Http.Request, response: Http.Response) {
+  async getOriginalUrl(request: Http.Request, response: Http.Response) {
     try {
       const repository = getUrlRepository();
-      const useCase = new FindUrlByShortenedKey(repository);
+      const useCase = new GetOriginalUrlByShortenedKey(repository);
 
       const result = await useCase.execute(request.params.shortenedKey);
 
-      response.redirect(result);
+      return response.status(httpStatus.OK).send({ result });
     } catch (error) {
       logger.error(error.message, error);
 
       if (error instanceof UrlNotFoundError) {
-        return response.status(httpStatus.NOT_FOUND);  
+        return response.status(httpStatus.NOT_FOUND).send();
       }
 
       return response.status(httpStatus.INTERNAL_SERVER_ERROR).send();

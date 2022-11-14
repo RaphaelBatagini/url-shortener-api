@@ -1,7 +1,7 @@
 import { Url } from "@/domain/url";
 import { IRepository } from "@/infra/repositories/interface";
 
-export class FindUrlByShortenedKey {
+export class GetOriginalUrlByShortenedKey {
   constructor(private repository: IRepository<Url>) {}
 
   async execute(shortenedKey: string): Promise<string> {
@@ -12,7 +12,7 @@ export class FindUrlByShortenedKey {
     if (!existingUrl) {
       const urlNotFound = new Url();
       urlNotFound.setShortenedKey(shortenedKey);
-      throw new UrlNotFoundError(urlNotFound.getShortenedUrl());
+      throw new UrlNotFoundError(urlNotFound.getShortenedKey());
     }
     
     return existingUrl.getOriginalUrl();
@@ -21,7 +21,7 @@ export class FindUrlByShortenedKey {
 
 export class UrlNotFoundError extends Error {
   constructor(url?: string) {
-    super(`Url ${url} not found`);
+    super(`Url for key ${url} not found`);
     this.name = 'UrlNotFoundError';
   }
 }

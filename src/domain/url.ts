@@ -21,10 +21,6 @@ export class Url {
     return this?.shortenedKey;
   }
 
-  getShortenedUrl(): string {
-    return `${process.env.APPLICATION_URL}/${this.shortenedKey}`;
-  }
-
   setId(id: number | string): void {
     this.id = id;
   }
