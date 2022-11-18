@@ -2,6 +2,8 @@
 
 This repository contains the code of a simple API to shorten URLs.
 
+A front-end for this application can be found [here](https://github.com/RaphaelBatagini/url-shortener-front-end).
+
 ![Tests](https://github.com/RaphaelBatagini/url-shortener-api/actions/workflows/test.yml/badge.svg?branch=main)
 
 ## Technologies :computer:
